@@ -81,8 +81,20 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Helper function to ensure URLs have proper scheme
+def ensure_scheme(url):
+    """Ensure URL has a scheme (http:// or https://)"""
+    if not url:
+        return None
+    url = url.strip()
+    if not url.startswith(('http://', 'https://')):
+        # Default to https for production domains
+        return f'https://{url}'
+    return url
+
 # CORS Configuration - Add your Vercel frontend URL
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+FRONTEND_URL = ensure_scheme(os.environ.get("FRONTEND_URL", "http://localhost:5173"))
+BACKEND_URL = ensure_scheme(os.environ.get("BACKEND_URL", "http://localhost:8000"))
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -94,8 +106,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # Add production URLs from environment
-if os.environ.get("FRONTEND_URL"):
-    CORS_ALLOWED_ORIGINS.append(os.environ.get("FRONTEND_URL"))
+if FRONTEND_URL and FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
@@ -107,10 +119,10 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Add production URLs from environment
-if os.environ.get("FRONTEND_URL"):
-    CSRF_TRUSTED_ORIGINS.append(os.environ.get("FRONTEND_URL"))
-if os.environ.get("BACKEND_URL"):
-    CSRF_TRUSTED_ORIGINS.append(os.environ.get("BACKEND_URL"))
+if FRONTEND_URL and FRONTEND_URL not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL)
+if BACKEND_URL and BACKEND_URL not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(BACKEND_URL)
 
 CORS_ALLOW_CREDENTIALS = True
 
