@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+.env/
+.env.*
+*.env
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Node (frontend)
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Secrets
+*.pem
+*.key
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build outputs
+build/
+.cache/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Production
+/backend/staticfiles/
+/backend/db.sqlite3
+/backend/.env
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
